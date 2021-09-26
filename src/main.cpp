@@ -81,9 +81,9 @@ int main() {
            */
 
           path_planning.prediction();
-          path_planning.behavioral_planning();
+          path_planning.behavior_planning();
 
-          std::pair<vector<double>, vector<double>> xy_vals = path_planning.trajectory_planning();
+          std::pair<vector<double>, vector<double>> xy_vals = path_planning.trajectory_generation();
 
           vector<double> next_x_vals = xy_vals.first;
           vector<double> next_y_vals = xy_vals.second;

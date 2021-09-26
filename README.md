@@ -9,13 +9,23 @@ To run the simulator on Mac/Linux, first make the binary file executable with th
 sudo chmod u+x {simulator_file_name}
 ```
 
+[//]: # (Image References)
+
+[uml_1]: ./output/UML_PathPlanning_ClassDiagram.png "PathPlanning_ClassDiagram"
+[uml_2]: ./output/UML_Spline_CLassDiagram.png "Spline_ClassDiagram"
+[control_scheme]: ./output/control_scheme.png "Control Scheme"
+[behavior]: ./output/behavior_planning.png "Behavior Planning"
+[behavior_action]: ./output/behavior_planning_actions.png "Behavior Actions"
+[trajectory]: ./output/Trajectory_Generation.png "Trajectory Generation"
+[best_drive]: ./output/driving_distance_wo_incident.png "Best Drive"
+
 ### Goals
 In this project your goal is to safely navigate around a virtual highway with other traffic that is driving +-10 MPH of the 50 MPH speed limit. You will be provided the car's localization and sensor fusion data, there is also a sparse map list of waypoints around the highway. The car should try to go as close as possible to the 50 MPH speed limit, which means passing slower traffic when possible, note that other cars will try to change lanes too. The car should avoid hitting other cars at all cost as well as driving inside of the marked road lanes at all times, unless going from one lane to another. The car should be able to make one complete loop around the 6946m highway. Since the car is trying to go 50 MPH, it should take a little over 5 minutes to complete 1 loop. Also the car should not experience total acceleration over 10 m/s^2 and jerk that is greater than 10 m/s^3.
 
-#### The map of the highway is in data/highway_map.txt
+#### The map of the highway is in data/highway_map.csv
 Each waypoint in the list contains  [x,y,s,dx,dy] values. x and y are the waypoint's map coordinate position, the s value is the distance along the road to get to that waypoint in meters, the dx and dy values define the unit normal vector pointing outward of the highway loop.
 
-The highway's waypoints loop around so the frenet s value, distance along the road, goes from 0 to 6945.554.
+The highway's waypoints loop around so the frenet s value, distance along the road, goes from 0 to 6945.554 (about 4.32 miles).
 
 ## Basic Build Instructions
 
@@ -65,10 +75,6 @@ the path has processed since last time.
 
 2. There will be some latency between the simulator running and the path planner returning a path, with optimized code usually its not very long maybe just 1-3 time steps. During this delay the simulator will continue using points that it was last given, because of this its a good idea to store the last points you have used so you can have a smooth transition. previous_path_x, and previous_path_y can be helpful for this transition since they show the last points given to the simulator controller with the processed points already removed. You would either return a path that extends this previous path or make sure to create a new path that has a smooth transition with this last path.
 
-## Tips
-
-A really helpful resource for doing this project and creating smooth trajectories was using http://kluge.in-chemnitz.de/opensource/spline/, the spline function is in a single hearder file is really easy to use.
-
 ---
 
 ## Dependencies
@@ -92,54 +98,93 @@ A really helpful resource for doing this project and creating smooth trajectorie
     git checkout e94b6e1
     ```
 
-## Editor Settings
+## Path Planning Implementation
 
-We've purposefully kept editor configuration files out of this repo in order to
-keep it as simple and environment agnostic as possible. However, we recommend
-using the following settings:
+### Repository folder structure
 
-* indent using spaces
-* set tab width to 2 spaces (keeps the matrices in source code aligned)
+CarND-Path-Planning-Project
+├── CMakeLists.txt
+├── cmakepatch.txt
+├── data
+│   └── highway_map.csv
+├── install-mac.sh
+├── install-ubuntu.sh
+├── LICENSE
+├── output
+│   ├── Behavior_planning.png
+│   ├── control_scheme.png
+│   ├── driving_distance_wo_incident.png
+│   ├── Trajectory_Generation.png
+│   ├── UML_PathPlanning_ClassDiagram.png
+│   └── UML_Spline_ClassDiagram.png
+├── README.md
+├── set_git.sh
+└── src
+    ├── helpers.h
+    ├── json.hpp
+    ├── main.cpp
+    ├── pathplanning.h
+    └── spline.h
 
-## Code Style
+### Classes Diagram
+Path Planning class diagram:
+![alttext][uml_1]
 
-Please (do your best to) stick to [Google's C++ style guide](https://google.github.io/styleguide/cppguide.html).
+Spline Interpolation class diagram:
+![alttext][uml_2]
 
-## Project Instructions and Rubric
+## Implementation details
+Path planning module includes of tree parts: prediction, behavior planning and trajectory generation. 
 
-Note: regardless of the changes you make, your project must be buildable using
-cmake and make!
+![alttext][control_scheme]
 
+Path Planning object is intanstiated in the [`main.cpp`], with waypoint of high way as the inputs. 
 
-## Call for IDE Profiles Pull Requests
+### Prediction
 
-Help your fellow students!
+Preduction function is a member of Path Planning class ['pathplanning.h']. The goal of the prediction function is to study the surrounding environment and check the status of all the other vehicles around the ego-vehicle. The following situations are considered:
 
-We decided to create Makefiles with cmake to keep this project as platform
-agnostic as possible. Similarly, we omitted IDE profiles in order to ensure
-that students don't feel pressured to use one IDE or another.
+* If there is a vehicle is driving in front of the ego-vehicle blocking the traffic and has a close distance from the ego-vehicle.
+* If there is a vehicle is driving to the right of the ego-vehicle at a closed distance, then making a right lane change really unsafe.
+* If there is a vehicle is driving to the left of the ego-vehicle at a closed distance, then making a left lane change really unsafe.
 
-However! I'd love to help people get up and running with their IDEs of choice.
-If you've created a profile for an IDE that you think other students would
-appreciate, we'd love to have you add the requisite profile files and
-instructions to ide_profiles/. For example if you wanted to add a VS Code
-profile, you'd add:
+It is safe is distance from ego-vehicle to other vehicles greater than 45 meters, otherwise it is unsafe. 
 
-* /ide_profiles/vscode/.vscode
-* /ide_profiles/vscode/README.md
+### Behavior Planning
 
-The README should explain what the profile does, how to take advantage of it,
-and how to install it.
+Behavior planning is basically getting input from prediction function and perform the coressponding actions. This function is a member of Path Planning class ['pathplanning.h']. 
+![alttext][behavior]
 
-Frankly, I've never been involved in a project with multiple IDE profiles
-before. I believe the best way to handle this would be to keep them out of the
-repo root to avoid clutter. My expectation is that most profiles will include
-instructions to copy files to a new location to get picked up by the IDE, but
-that's just a guess.
+Behavior planning function is also doing a high priority task to ensure the ego-vehicle in the middle lane. 
 
-One last note here: regardless of the IDE used, every submitted project must
-still be compilable with cmake and make./
+![alttext][behavior_action]
 
-## How to write a README
-A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).
+### Trajectory Generation
 
+Trajectory Generation function is getting behavior planning input, ego-vehicle coordinates and the past points to calculate the desired trajectory. This function is a member of of Path Planning class ['pathplanning.h']
+
+A smooth trajectory is calculated using the spline which contains information about previous path points of the  vehicle and some future points from the map. The actual future path points of the ego vehicle are derived from the spline. This will help in doing a smooth trajectory and avoids increasing the jerk.
+
+In order to avoid sudden changes in the velocity, the distance between the points in the path are incrementally increased or decreased.
+
+![alttext][trajectory]
+
+## Results 
+
+1. **The car is able to drive at least 4.32 miles without incident.**: The vehicle was able to drive more than 4.32 miles without any incident.
+
+![alttext][best_drive]
+
+2. **The car drives according to the speed limit.**: The car did not exceed the maximum allowed speed limit of 50 MPH
+
+3. **Max Acceleration and Jerk are not Exceeded.**: The maximum acceleration of 10 m/s^2 and jerk of 10 m/s^3 were not exceeded
+   
+4. **Car does not have collisions.**: Within all the driving tests, the car did not have any collisions.
+   
+5. **The car stays in its lane, except for the time between changing lanes.**: Based on the intenteded behavior, the car was always staying in its lane, except when doing a lane change due to a vehicle which is obstructing the traffic flow in front of it, or when it is on the left or right side, and it is safe to go back to the middle lane.
+   
+6. **The car is able to change lanes.**: The car was able to change lanes smoothly to left or right, when there is a vehicle in the front obstructing the traffic flow, or when it is returning back to the middle lane (if it is safe).
+
+## Reference
+Project is using Cubic Spline interpolation library for smooth trajectory creation. 
+https://kluge.in-chemnitz.de/opensource/spline/ 

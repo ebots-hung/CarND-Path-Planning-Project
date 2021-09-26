@@ -20,8 +20,10 @@ using nlohmann::json;
 #define MIDDLE_LANE_BOUNDARY      8
 #define RIGHT_LANE_BOUNDARY       12
 
-#define MAX_VELOCITY              49.5
-#define MAX_ACC                   0.224
+#define MAX_SPEED                 49.5
+#define MAX_ACC                   0.448
+
+#define SAFE_DIS                  45
 
 class PathPlanning 
 {
@@ -151,24 +153,24 @@ class PathPlanning
         if (other_car_lane == ego_car_lane) 
         {
           // If the car is close to my car
-          car_front |= check_car_s > car_s && check_car_s - car_s < 30;
+          car_front |= check_car_s > car_s && check_car_s - car_s < SAFE_DIS;
         }
         // If the other car is on the left of my car
         else if (other_car_lane - ego_car_lane == -1) 
         {
           // If the car is close to my car
-          car_left |= car_s - 30 < check_car_s && car_s + 30 > check_car_s;
+          car_left |= car_s - SAFE_DIS < check_car_s && car_s + SAFE_DIS > check_car_s;
         }
         // If the other car is on the right of my car
         else if (other_car_lane - ego_car_lane == 1) 
         {
           // If the car is close to my car
-          car_right |= car_s - 30 < check_car_s && car_s + 30 > check_car_s;
+          car_right |= car_s - SAFE_DIS < check_car_s && car_s + SAFE_DIS > check_car_s;
         }
       }
     }
 
-    void behavioral_planning() 
+    void behavior_planning() 
     {
       if (car_front) 
       {
@@ -190,7 +192,6 @@ class PathPlanning
       }
       else 
       {
-        // Priority is to always drive in middle lane - If our car is not in the middle lane
         if (ego_car_lane != MIDDLE_LANE) 
         {
           // Go back to the middle lane
@@ -201,14 +202,14 @@ class PathPlanning
           }
         }
         // Accelerate if no vehicles are front ahead
-        if (ref_vel < MAX_VELOCITY) 
+        if (ref_vel < MAX_SPEED) 
         {
           ref_vel += MAX_ACC;
         }
       }
     }
 
-    std::pair<vector<double>, vector<double>> trajectory_planning() 
+    std::pair<vector<double>, vector<double>> trajectory_generation() 
     {
       // Calculate Trajectory
       vector<double> ptsx;
@@ -288,9 +289,9 @@ class PathPlanning
       for (int i = 1; i < 50 - prev_size; i++) 
       {
         // Avoid exceeding speed limit
-        if (ref_vel > MAX_VELOCITY) 
+        if (ref_vel > MAX_SPEED) 
         {
-          ref_vel = MAX_VELOCITY;
+          ref_vel = MAX_SPEED;
         }
         // Avoid driving at 0 speed
         else if (ref_vel < MAX_ACC) 
