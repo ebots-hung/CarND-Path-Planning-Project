@@ -12,7 +12,7 @@ sudo chmod u+x {simulator_file_name}
 [//]: # (Image References)
 
 [uml_1]: ./output/UML_PathPlanning_ClassDiagram.png "PathPlanning_ClassDiagram"
-[uml_2]: ./output/UML_Spline_CLassDiagram.png "Spline_ClassDiagram"
+[uml_2]: ./output/UML_Spline_ClassDiagram.png "Spline_ClassDiagram"
 [control_scheme]: ./output/control_scheme.png "Control Scheme"
 [behavior]: ./output/behavior_planning.png "Behavior Planning"
 [behavior_action]: ./output/behavior_planning_actions.png "Behavior Actions"
