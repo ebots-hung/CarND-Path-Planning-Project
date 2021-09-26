@@ -101,7 +101,7 @@ the path has processed since last time.
 ## Path Planning Implementation
 
 ### Repository folder structure
-
+```
 CarND-Path-Planning-Project
 ├── CMakeLists.txt
 ├── cmakepatch.txt
@@ -125,7 +125,7 @@ CarND-Path-Planning-Project
     ├── main.cpp
     ├── pathplanning.h
     └── spline.h
-
+```
 ### Classes Diagram
 Path Planning class diagram:
 ![alttext][uml_1]
