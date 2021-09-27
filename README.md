@@ -153,6 +153,7 @@ It is safe is distance from ego-vehicle to other vehicles greater than 45 meters
 ### Behavior Planning
 
 Behavior planning is basically getting input from prediction function and perform the coressponding actions. This function is a member of Path Planning class [`pathplanning.h`]. 
+
 ![alttext][behavior]
 
 Behavior planning function is also doing a high priority task to ensure the ego-vehicle in the middle lane. 
@@ -171,7 +172,7 @@ A smooth trajectory is calculated using the spline which contains information ab
 
 1. **The car is able to drive at least 4.32 miles without incident.**: The vehicle was able to drive more than 4.32 miles without any incident.
 
-![alttext][best_drive]
+![alttext][bestdrive]
 
 2. **The car drives according to the speed limit.**: The car did not exceed the maximum allowed speed limit of 50 MPH
 
