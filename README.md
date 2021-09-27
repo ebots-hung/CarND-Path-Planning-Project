@@ -13,11 +13,11 @@ sudo chmod u+x {simulator_file_name}
 
 [uml_1]: ./output/UML_PathPlanning_ClassDiagram.png "PathPlanning_ClassDiagram"
 [uml_2]: ./output/UML_Spline_ClassDiagram.png "Spline_ClassDiagram"
-[control_scheme]: ./output/control_scheme.png "Control Scheme"
+[control]: ./output/control_scheme.png "Control Scheme"
 [behavior]: ./output/behavior_planning.png "Behavior Planning"
-[behavior_action]: ./output/behavior_planning_actions.png "Behavior Actions"
+[behavioraction]: ./output/behavior_planning_actions.png "Behavior Actions"
 [trajectory]: ./output/Trajectory_Generation.png "Trajectory Generation"
-[best_drive]: ./output/driving_distance_wo_incident.png "Best Drive"
+[bestdrive]: ./output/driving_distance_wo_incident.png "Best Drive"
 
 ### Goals
 In this project your goal is to safely navigate around a virtual highway with other traffic that is driving +-10 MPH of the 50 MPH speed limit. You will be provided the car's localization and sensor fusion data, there is also a sparse map list of waypoints around the highway. The car should try to go as close as possible to the 50 MPH speed limit, which means passing slower traffic when possible, note that other cars will try to change lanes too. The car should avoid hitting other cars at all cost as well as driving inside of the marked road lanes at all times, unless going from one lane to another. The car should be able to make one complete loop around the 6946m highway. Since the car is trying to go 50 MPH, it should take a little over 5 minutes to complete 1 loop. Also the car should not experience total acceleration over 10 m/s^2 and jerk that is greater than 10 m/s^3.
@@ -136,7 +136,7 @@ Spline Interpolation class diagram:
 ## Implementation details
 Path planning module includes of tree parts: prediction, behavior planning and trajectory generation. 
 
-![alttext][control_scheme]
+![alttext][control]
 
 Path Planning object is intanstiated in the [`main.cpp`], with waypoint of high way as the inputs. 
 
@@ -157,7 +157,7 @@ Behavior planning is basically getting input from prediction function and perfor
 
 Behavior planning function is also doing a high priority task to ensure the ego-vehicle in the middle lane. 
 
-![alttext][behavior_action]
+![alttext][behavioraction]
 
 ### Trajectory Generation
 
