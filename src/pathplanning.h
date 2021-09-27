@@ -21,9 +21,9 @@ using nlohmann::json;
 #define RIGHT_LANE_BOUNDARY       12
 
 #define MAX_SPEED                 49.5
-#define MAX_ACC                   0.448
+#define MAX_ACC                   0.5
 
-#define SAFE_DIS                  45
+#define SAFE_DIS                  35
 
 class PathPlanning 
 {

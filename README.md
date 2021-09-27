@@ -148,7 +148,7 @@ Preduction function is a member of Path Planning class [`pathplanning.h`]. The g
 * If there is a vehicle is driving to the right of the ego-vehicle at a closed distance, then making a right lane change really unsafe.
 * If there is a vehicle is driving to the left of the ego-vehicle at a closed distance, then making a left lane change really unsafe.
 
-It is safe is distance from ego-vehicle to other vehicles greater than 45 meters, otherwise it is unsafe. 
+It is safe is distance from ego-vehicle to other vehicles greater than 35 meters, otherwise it is unsafe. 
 
 ### Behavior Planning
 
