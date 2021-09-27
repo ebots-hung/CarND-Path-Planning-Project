@@ -170,9 +170,9 @@ A smooth trajectory is calculated using the spline which contains information ab
 
 ## Results 
 
-1. **The car is able to drive at least 4.32 miles without incident.**: The vehicle was able to drive more than 4.32 miles without any incident.
-
 ![alttext][bestdrive]
+
+1. **The car is able to drive at least 4.32 miles without incident.**: The vehicle was able to drive more than 4.32 miles without any incident.
 
 2. **The car drives according to the speed limit.**: The car did not exceed the maximum allowed speed limit of 50 MPH
 
