@@ -142,7 +142,7 @@ Path Planning object is intanstiated in the [`main.cpp`], with waypoint of high 
 
 ### Prediction
 
-Preduction function is a member of Path Planning class ['pathplanning.h']. The goal of the prediction function is to study the surrounding environment and check the status of all the other vehicles around the ego-vehicle. The following situations are considered:
+Preduction function is a member of Path Planning class [`pathplanning.h`]. The goal of the prediction function is to study the surrounding environment and check the status of all the other vehicles around the ego-vehicle. The following situations are considered:
 
 * If there is a vehicle is driving in front of the ego-vehicle blocking the traffic and has a close distance from the ego-vehicle.
 * If there is a vehicle is driving to the right of the ego-vehicle at a closed distance, then making a right lane change really unsafe.
@@ -152,7 +152,7 @@ It is safe is distance from ego-vehicle to other vehicles greater than 45 meters
 
 ### Behavior Planning
 
-Behavior planning is basically getting input from prediction function and perform the coressponding actions. This function is a member of Path Planning class ['pathplanning.h']. 
+Behavior planning is basically getting input from prediction function and perform the coressponding actions. This function is a member of Path Planning class [`pathplanning.h`]. 
 ![alttext][behavior]
 
 Behavior planning function is also doing a high priority task to ensure the ego-vehicle in the middle lane. 
@@ -161,11 +161,9 @@ Behavior planning function is also doing a high priority task to ensure the ego-
 
 ### Trajectory Generation
 
-Trajectory Generation function is getting behavior planning input, ego-vehicle coordinates and the past points to calculate the desired trajectory. This function is a member of of Path Planning class ['pathplanning.h']
+Trajectory Generation function is getting behavior planning input, ego-vehicle coordinates and the past points to calculate the desired trajectory. This function is a member of of Path Planning class [`pathplanning.h`]
 
 A smooth trajectory is calculated using the spline which contains information about previous path points of the  vehicle and some future points from the map. The actual future path points of the ego vehicle are derived from the spline. This will help in doing a smooth trajectory and avoids increasing the jerk.
-
-In order to avoid sudden changes in the velocity, the distance between the points in the path are incrementally increased or decreased.
 
 ![alttext][trajectory]
 
@@ -181,9 +179,9 @@ In order to avoid sudden changes in the velocity, the distance between the point
    
 4. **Car does not have collisions.**: Within all the driving tests, the car did not have any collisions.
    
-5. **The car stays in its lane, except for the time between changing lanes.**: Based on the intenteded behavior, the car was always staying in its lane, except when doing a lane change due to a vehicle which is obstructing the traffic flow in front of it, or when it is on the left or right side, and it is safe to go back to the middle lane.
+5. **The car stays in its lane, except for the time between changing lanes.**: the car was always staying in its lane, except when doing a lane change due to a vehicle which is blocking the traffic flow in front of it.
    
-6. **The car is able to change lanes.**: The car was able to change lanes smoothly to left or right, when there is a vehicle in the front obstructing the traffic flow, or when it is returning back to the middle lane (if it is safe).
+6. **The car is able to change lanes.**: The car was able to change lanes smoothly to left or right, when there is a vehicle in the front obstructing the traffic flow.
 
 ## Reference
 Project is using Cubic Spline interpolation library for smooth trajectory creation. 
